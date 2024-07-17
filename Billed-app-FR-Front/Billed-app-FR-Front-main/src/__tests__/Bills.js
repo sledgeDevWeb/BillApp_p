@@ -34,6 +34,15 @@ describe("Given I am connected as an employee", () => {
       const antiChrono = (a, b) => ((a < b) ? 1 : -1)
       const datesSorted = [...dates].sort(antiChrono)
       expect(dates).toEqual(datesSorted)
+      
+     
+        // const antiChrono = (a, b) => ((a < b) ? 1 : -1)
+        
+        // document.body.innerHTML = BillsUI({ data: bills })
+        // const dates = screen.getAllByText(/^([1-9]|[12][0-9]|3[01])[- /.](\S+.{3})[- /.]([0-9]{2})$/i).map(a => a.innerHTML)
+        // const sortedDates = [...dates].sort(antiChrono)
+        // expect(sortedDates).toEqual(dates)
+     
     })
   })
 })

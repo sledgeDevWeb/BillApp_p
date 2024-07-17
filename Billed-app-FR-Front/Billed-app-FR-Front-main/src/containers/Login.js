@@ -57,18 +57,18 @@ export default class Login {
     this.document.body.style.backgroundColor = "#fff";
   }
 
-  // login = (user) => {
-  //   if (this.store) {
-  //     return this.store.login(JSON.stringify({
-  //       email: user.email,
-  //       password: user.password,
-  //     })).then(({ jwt }) => {
-  //       this.localStorage.setItem('jwt', jwt);
-  //     });
-  //   } else {
-  //     return Promise.reject(new Error('No store available'));
-  //   }
-  // }
+  login = (user) => {
+    if (this.store) {
+      return this.store.login(JSON.stringify({
+        email: user.email,
+        password: user.password,
+      })).then(({ jwt }) => {
+        this.localStorage.setItem('jwt', jwt);
+      });
+    } else {
+      return Promise.reject(new Error('No store available'));
+    }
+  }
 
   // createUser = (user) => {
   //   if (this.store) {
