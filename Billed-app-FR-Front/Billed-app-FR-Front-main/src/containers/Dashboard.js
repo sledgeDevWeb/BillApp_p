@@ -82,7 +82,7 @@ export default class {
     const billUrl = $('#icon-eye-d').attr("data-bill-url")
     const imgWidth = Math.floor($('#modaleFileAdmin1').width() * 0.8)
     $('#modaleFileAdmin1').find(".modal-body").html(`<div style='text-align: center;'><img width=${imgWidth} src=${billUrl} alt="Bill"/></div>`)
-    // if (typeof $('#modaleFileAdmin1').modal === 'function') $('#modaleFileAdmin1').modal('show')
+     if (typeof $('#modaleFileAdmin1').modal === 'function') $('#modaleFileAdmin1').modal('show')
   }
 
   handleEditTicket(e, bill, bills) {
@@ -106,8 +106,8 @@ export default class {
       this.counter ++
     }
     $('#icon-eye-d').click(this.handleClickIconEye)
-    // $('#btn-accept-bill').click((e) => this.handleAcceptSubmit(e, bill))
-    // $('#btn-refuse-bill').click((e) => this.handleRefuseSubmit(e, bill))
+     $('#btn-accept-bill').click((e) => this.handleAcceptSubmit(e, bill))
+     $('#btn-refuse-bill').click((e) => this.handleRefuseSubmit(e, bill))
   }
 
   handleAcceptSubmit = (e, bill) => {
@@ -139,10 +139,10 @@ export default class {
         .html(cards(filteredBills(bills, getStatus(this.index))))
       this.counter ++
     } else {
-      // $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)'})
-      // $(`#status-bills-container${this.index}`)
-      //   .html("")
-      // this.counter ++
+       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)'})
+       $(`#status-bills-container${this.index}`)
+         .html("")
+       this.counter ++
     }
 
     bills.forEach(bill => {
