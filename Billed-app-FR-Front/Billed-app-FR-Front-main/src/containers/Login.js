@@ -39,13 +39,13 @@ export default class Login {
       await this.login(user);
       this.onSuccessfulLogin(userType);
     } catch (err) {
-      // try {
-      //   await this.createUser(user);
-      //   this.onSuccessfulLogin(userType);
-      // } catch (createErr) {
-      //   console.error('Error creating user:', createErr);
-      //   // Add user-friendly error handling here
-      // }
+      try {
+        await this.createUser(user);
+        this.onSuccessfulLogin(userType);
+      } catch (createErr) {
+         console.error('Error creating user:', createErr);
+         //Add user-friendly error handling here;
+      }
     }
   }
 
@@ -70,19 +70,19 @@ export default class Login {
     }
   }
 
-  // createUser = (user) => {
-  //   if (this.store) {
-  //     return this.store.users().create({
-  //       data: JSON.stringify({
-  //         type: user.type,
-  //         email: user.email,
-  //         password: user.password,
-  //       })
-  //     }).then(() => {
-  //       return this.login(user);
-  //     });
-  //   } else {
-  //     return Promise.reject(new Error('No store available'));
-  //   }
-  // }
+  createUser = (user) => {
+    if (this.store) {
+      return this.store.users().create({
+        data: JSON.stringify({
+          type: user.type,
+          email: user.email,
+          password: user.password,
+        })
+      }).then(() => {
+        return this.login(user);
+      });
+    } else {
+      return Promise.reject(new Error('No store available'));
+    }
+  }
 }

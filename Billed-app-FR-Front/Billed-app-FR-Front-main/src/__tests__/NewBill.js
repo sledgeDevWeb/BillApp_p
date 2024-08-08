@@ -5,7 +5,7 @@
 import { screen } from "@testing-library/dom"
 import '@testing-library/jest-dom/extend-expect' // for additional matchers like toBeInTheDocument
 import NewBillUI from "../views/NewBillUI.js"
-import NewBill from "../containers/NewBill.js"
+
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on NewBill Page", () => {
