@@ -27,6 +27,8 @@ export default class {
      $('#modaleFile').modal('show')
   }
 
+  
+
   getBills = () => {
     if (this.store) {
       return this.store

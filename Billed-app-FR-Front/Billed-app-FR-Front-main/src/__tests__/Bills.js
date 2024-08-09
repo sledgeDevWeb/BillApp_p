@@ -35,9 +35,6 @@ describe("Given I am connected as an employee", () => {
       const sortedDates = [...dates].sort((a, b) => new Date(a) < new Date(b));
       expect(dates).toEqual(sortedDates);
       
-      
-     
-     
     })
   })
 })
