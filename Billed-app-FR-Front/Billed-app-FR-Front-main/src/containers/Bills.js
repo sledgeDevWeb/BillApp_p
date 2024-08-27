@@ -1,6 +1,7 @@
 import { ROUTES_PATH } from '../constants/routes.js'
 import { formatDate, formatStatus } from "../app/format.js"
 import Logout from "./Logout.js"
+import router from "../app/Router.js";
 
 export default class {
   constructor({ document, onNavigate, store, localStorage }) {
@@ -17,6 +18,8 @@ export default class {
   }
 
   handleClickNewBill = () => {
+ 
+    router()
     this.onNavigate(ROUTES_PATH['NewBill'])
   }
 
@@ -25,9 +28,9 @@ export default class {
      const imgWidth = Math.floor($('#modaleFile').width() * 0.5)
      $('#modaleFile').find(".modal-body").html(`<div style='text-align: center;' class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill" /></div>`)
      $('#modaleFile').modal('show')
-  }
+    
 
-  
+  }
 
   getBills = () => {
     if (this.store) {
@@ -55,7 +58,7 @@ export default class {
               }
             }
           })
-          console.log('length', bills.length)
+          // console.log('length', bills.length)
         return bills
       })
     }

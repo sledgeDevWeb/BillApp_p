@@ -5,12 +5,24 @@
 import { screen } from "@testing-library/dom"
 import '@testing-library/jest-dom/extend-expect' // for additional matchers like toBeInTheDocument
 import NewBillUI from "../views/NewBillUI.js"
+import { ROUTES_PATH } from "../constants/routes";
+import router from "../app/Router.js";
+import {localStorageMock} from "../__mocks__/localStorage.js";
 
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on NewBill Page", () => {
     test("Then the form should be rendered correctly", () => {
       // Render the NewBill UI
+      Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+      window.localStorage.setItem('user', JSON.stringify({
+        type: 'Employee'
+      }))
+      const root = document.createElement("div")
+      root.setAttribute("id", "root")
+      document.body.append(root)
+      router()
+      window.onNavigate(ROUTES_PATH.NewBill)
       const html = NewBillUI()
       document.body.innerHTML = html
 
