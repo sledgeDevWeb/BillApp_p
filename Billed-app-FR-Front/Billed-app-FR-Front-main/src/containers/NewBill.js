@@ -1,15 +1,29 @@
 import { ROUTES_PATH } from '../constants/routes.js'
 import Logout from "./Logout.js"
-import {localStorageMock} from "../__mocks__/localStorage.js";
 
+
+function validateFiles(files) {
+  //extensions et type MIME autorisés
+  const allowedExtensions = ['png', 'jpg', 'jpeg']
+  const allowedMimeTypes = ['image/png', 'image/jpeg']
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i]
+
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+
+    // Vérifie l'extension et le type MIME du fichier
+    if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
+      alert('Seuls les fichiers PNG, JPG, JPEG sont autorisés.');
+      return false
+    }
+  }
+  // Si les fichiers sont valides
+  return true
+}
 
 export default class NewBill {
-  
   constructor({ document, onNavigate, store, localStorage }) {
-    Object.defineProperty(window, 'localStorage', { value: localStorageMock })
-      window.localStorage.setItem('user', JSON.stringify({
-        type: 'Employee'
-      }))
     this.document = document
     this.onNavigate = onNavigate
     this.store = store
@@ -25,20 +39,23 @@ export default class NewBill {
 
   handleChangeFile = e => {
     e.preventDefault()
-    const fileInput = this.document.querySelector(`input[data-testid="file"]`);
-    const fileErrorMessage = this.document.querySelector('p[data-testid="file-error-message"]');
-    const file = fileInput.files[0]
+    const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
 
-    if (file.type.includes('png') || file.type.includes('jpg') || file.type.includes('jpeg')) {
-      fileErrorMessage.classList.add('hide');
-      const filePath = e.target.value.split(/\\/g)
-      const fileName = filePath[filePath.length-1]
-      const formData = new FormData()
-      const email = JSON.parse(localStorage.getItem("user")).email
-      formData.append('file', file)
-      formData.append('email', email)
+    if(!validateFiles([file])) {
+      // réinitialise l'input file si le fichier est invalide
+      e.target.value = ''
+      // et sort de la fonction si le fichier n'est pas valide
+      return
+    }
 
-      this.store
+    const filePath = e.target.value.split(/\\/g)
+    const fileName = filePath[filePath.length-1]
+    const formData = new FormData()
+    const email = JSON.parse(localStorage.getItem("user")).email
+    formData.append('file', file)
+    formData.append('email', email)
+
+    this.store
       .bills()
       .create({
         data: formData,
@@ -50,16 +67,16 @@ export default class NewBill {
         this.billId = key
         this.fileUrl = fileUrl
         this.fileName = fileName
-      })
-      .catch(error => console.error(error))
-    } else {
-      fileInput.value = ''
-      fileErrorMessage.classList.remove('hide')
-    }
+      }).catch(error => console.error(error))
   }
 
   handleSubmit = e => {
     e.preventDefault()
+    console.log("handleSubmit called");
+
+    const user = localStorage.getItem("user");
+    console.log("LocalStorage user:", user);
+
     const email = JSON.parse(localStorage.getItem("user")).email
     const bill = {
       email,
@@ -74,20 +91,25 @@ export default class NewBill {
       fileName: this.fileName,
       status: 'pending'
     }
+    console.log("Bill to be created:", bill);
     this.updateBill(bill)
+    console.log("update called");
     this.onNavigate(ROUTES_PATH['Bills'])
   }
+ 
 
   // not need to cover this function by tests
   updateBill = (bill) => {
     if (this.store) {
-      this.store
-      .bills()
-      .update({data: JSON.stringify(bill), selector: this.billId})
-      .then(() => {
-        this.onNavigate(ROUTES_PATH['Bills'])
-      })
-      .catch(error => console.error(error))
+      return this.store  // "return" ici pour retourner la promesse
+          .bills()
+          .update({ data: JSON.stringify(bill), selector: this.billId })
+          .then(() => {
+            this.onNavigate(ROUTES_PATH['Bills']);
+          })
+          .catch(error => console.error("Error updating bill:", error));
     }
+    // Retourne une promesse rejetée si `this.store` n'est pas défini
+    return Promise.reject(new Error('Store is not defined'));
   }
 }

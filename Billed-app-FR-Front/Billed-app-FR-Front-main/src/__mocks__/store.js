@@ -82,7 +82,7 @@ const mockedBills = {
       "pct": 20
     })
   },
-}
+};
 
 export default {
   bills() {
