@@ -8,8 +8,8 @@ import Bills from "../containers/Bills.js";
 import { bills } from "../fixtures/bills.js";
 import { ROUTES_PATH } from "../constants/routes.js";
 import { localStorageMock } from "../__mocks__/localStorage.js";
-import router from "../app/Router.js";
 import mockStore from "../__mocks__/store"
+import router from "../app/Router.js";
 
 // Mocking the store
 // jest.mock("../app/Store.js", () => ({
@@ -169,13 +169,13 @@ describe("Given I am connected as an employee", () => {
 
 //test d'intégration GET
   describe("When I navigate to Bills Page", () => {
-    // test("fetches bills from mock API GET", async () => {
-    //   localStorage.setItem("user", JSON.stringify({ type: "Employee" }));
-    //   const root = document.createElement("div");
-    //   root.setAttribute("id", "root");
-    //   document.body.append(root);
-    //   router()
-    // })
+    test("fetches bills from mock API GET", async () => {
+      localStorage.setItem("user", JSON.stringify({ type: "Employee" }));
+      const root = document.createElement("div");
+      root.setAttribute("id", "root");
+      document.body.append(root);
+      router()
+    })
     beforeEach(() => {
       jest.spyOn(mockStore, "bills")
       Object.defineProperty(
@@ -187,6 +187,7 @@ describe("Given I am connected as an employee", () => {
         type: 'Employee',
         email: "a@a"
       }))
+
       const root = document.createElement("div")
       root.setAttribute("id", "root")
       document.body.appendChild(root)
@@ -204,7 +205,7 @@ describe("Given I am connected as an employee", () => {
         window.onNavigate(ROUTES_PATH.Bills)
         await new Promise(process.nextTick);
         const message = screen.getByText(/Erreur 404/)
-        expect(message).toBeTruthy()
+        expect(message).toBeTruthy();
       })
   
       test("fetches messages from an API and fails with 500 message error", async () => {
@@ -219,8 +220,7 @@ describe("Given I am connected as an employee", () => {
         window.onNavigate(ROUTES_PATH.Bills)
         await new Promise(process.nextTick);
         const message = screen.getByText(/Erreur 500/)
-        expect(message).toBeTruthy()
+        expect(message).toBeTruthy();
       })
     })
-  
-    })
+  })
